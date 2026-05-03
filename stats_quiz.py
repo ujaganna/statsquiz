@@ -7,7 +7,10 @@ import math
 import json
 import datetime
 import statistics
-from scipy import stats
+
+def norm_cdf(x):
+    """Standard normal CDF using math.erfc — no scipy needed."""
+    return 0.5 * math.erfc(-x / math.sqrt(2))
 
 # Database setup
 DATABASE_NAME = 'stats_quiz.db'
@@ -150,7 +153,7 @@ def generate_q7():
     z_val = round(random.uniform(0.05, 0.15), 2)
     # P(X > z_val) = 1 - Phi((z_val - mu) / sigma)
     z_score = (z_val - mu) / sigma
-    prob = round(1 - stats.norm.cdf(z_score), 2)
+    prob = round(1 - norm_cdf(z_score), 2)
     question_text = (
         f"**Question 7:**\n"
         f"A stock has a **mean return of {mu}** and a **standard deviation of {sigma}**.\n\n"
