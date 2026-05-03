@@ -232,7 +232,7 @@ if not st.session_state.roll_number_submitted:
                 st.error("Roll number cannot be empty.")
             elif st.session_state.roll_number == "admin001":
                 st.session_state.roll_number_submitted = True
-                st.success("Admin login successful.")
+                st.rerun()
             else:
                 conn = get_db_connection()
                 c = conn.cursor()
@@ -244,8 +244,8 @@ if not st.session_state.roll_number_submitted:
                     st.error(f"Roll number '{st.session_state.roll_number}' already exists. Please contact support if this is an error.")
                 else:
                     st.session_state.roll_number_submitted = True
-                    st.success(f"Roll Number {st.session_state.roll_number} accepted. Starting quiz...")
                     st.session_state.question_data = {"dummy": "data"}
+                    st.rerun()
 
 # --- Admin Dashboard ---
 elif st.session_state.get("roll_number", "") == "admin001":
