@@ -116,8 +116,8 @@ def generate_q5():
     data = [random.randint(1, 25) for _ in range(10)]
     sorted_data = sorted(data)
     n = len(sorted_data)
-    # Calculate the position for the 25th percentile (P = 0.25*(n+1))
-    pos = 0.25 * (n + 1)
+    # Calculate the position for the 25th percentile (P = 0.10*(n+1))
+    pos = 0.10 * (n + 1)
     lower_idx = int(math.floor(pos)) - 1  # zero-based index
     upper_idx = int(math.ceil(pos)) - 1
     if lower_idx == upper_idx:
