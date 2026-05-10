@@ -114,12 +114,24 @@ def generate_q4():
 
 def generate_q5():
     data = [random.randint(1, 25) for _ in range(10)]
-    p25 = round(float(pd.Series(data).quantile(0.25)), 2)
+    sorted_data = sorted(data)
+    n = len(sorted_data)
+    # Calculate the position for the 25th percentile (P = 0.25*(n+1))
+    pos = 0.25 * (n + 1)
+    lower_idx = int(math.floor(pos)) - 1  # zero-based index
+    upper_idx = int(math.ceil(pos)) - 1
+    if lower_idx == upper_idx:
+        p25 = float(sorted_data[lower_idx])
+    else:
+        # Linear interpolation between lower and upper
+        fraction = pos - math.floor(pos)
+        p25 = sorted_data[lower_idx] + fraction * (sorted_data[upper_idx] - sorted_data[lower_idx])
+    p25 = round(float(p25), 2)
     question_text = (
         f"**Question 5:**\n"
         f"Compute the **25th Percentile (Q1)** of the following 10 integers:\n\n"
         f"`{data}`\n\n"
-        f"*(Round your answer to 2 decimal places. Use linear interpolation method.)*"
+        f"*(Round your answer to 2 decimal places. Use the percentile position formula: P = 0.25*(n+1).)*"
     )
     return {
         "type": "Percentile25",
