@@ -263,40 +263,6 @@ if not st.session_state.roll_number_submitted:
 elif st.session_state.get("roll_number", "") == "admin001":
     st.header("Admin Dashboard")
 
-    if 'admin_clear_data_confirm' not in st.session_state:
-        st.session_state.admin_clear_data_confirm = False
-    if 'admin_clear_data_ok' not in st.session_state:
-        st.session_state.admin_clear_data_ok = False
-
-    if not st.session_state.admin_clear_data_confirm:
-        if st.button("Clear All Student Data", key="clear_data_btn"):
-            st.session_state.admin_clear_data_confirm = True
-    else:
-        st.warning("Are you sure you want to clear all student data? This cannot be undone.")
-        col_ok, col_cancel = st.columns(2)
-        with col_ok:
-            if st.button("OK", key="clear_data_ok"):
-                st.session_state.admin_clear_data_ok = True
-        with col_cancel:
-            if st.button("Cancel", key="clear_data_cancel"):
-                st.session_state.admin_clear_data_confirm = False
-                st.session_state.admin_clear_data_ok = False
-                st.info("Clear data cancelled.")
-
-    if st.session_state.admin_clear_data_ok:
-        conn = get_db_connection()
-        c = conn.cursor()
-        try:
-            c.execute("DELETE FROM quiz_data WHERE roll_number != 'admin001'")
-            conn.commit()
-            st.success("All student data cleared.")
-        except Exception as e:
-            st.error(f"Error clearing data: {e}")
-        finally:
-            conn.close()
-        st.session_state.admin_clear_data_confirm = False
-        st.session_state.admin_clear_data_ok = False
-
     conn = get_db_connection()
     c = conn.cursor()
     c.execute("SELECT roll_number, marks, last_saved_at FROM quiz_data WHERE roll_number != 'admin001' ORDER BY last_saved_at DESC")
