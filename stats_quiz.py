@@ -387,7 +387,7 @@ elif st.session_state.get("roll_number_submitted", False):
                     score = 0
                     for i, q in enumerate(st.session_state.question_data):
                         correct_answer = q["answer"]
-                        student_answer_str = st.session_state.student_answers.get(str(i), "").strip()
+                        student_answer_str = st.session_state.student_answers.get(str(i), "").strip().replace(",", "")
                         try:
                             student_answer = float(student_answer_str)
                             tolerance = 0.05  # All answers are 2 decimal places
@@ -429,7 +429,7 @@ elif st.session_state.get("roll_number_submitted", False):
                         student_ans = st.session_state.student_answers.get(str(i), 'Not answered')
                         correct_ans = q['answer']
                         try:
-                            is_correct = abs(float(student_ans) - correct_ans) <= 0.05
+                            is_correct = abs(float(str(student_ans).replace(",", "")) - correct_ans) <= 0.05
                             result_icon = "✅" if is_correct else "❌"
                         except (ValueError, TypeError):
                             result_icon = "❌"
@@ -453,7 +453,7 @@ elif st.session_state.get("roll_number_submitted", False):
             student_ans = st.session_state.student_answers.get(str(i), 'Not answered')
             correct_ans = q['answer']
             try:
-                is_correct = abs(float(student_ans) - correct_ans) <= 0.05
+                is_correct = abs(float(str(student_ans).replace(",", "")) - correct_ans) <= 0.05
                 result_icon = "✅" if is_correct else "❌"
             except (ValueError, TypeError):
                 result_icon = "❌"
